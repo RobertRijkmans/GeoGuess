@@ -9,6 +9,7 @@ public class StreetView {
     public StreetView(String mGeoName, int mGeoImageName) {
         this.mGeoName = mGeoName;
         this.mGeoImageName = mGeoImageName;
+        //Give the mInEurope boolean a value
         if(mGeoName == "denmark" || mGeoName == "kazachstan"||mGeoName == "poland"||mGeoName == "malta"){
             mInEurope = true;
         }

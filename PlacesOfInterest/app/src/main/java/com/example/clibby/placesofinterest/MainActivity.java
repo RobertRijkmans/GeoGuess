@@ -17,7 +17,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
     List<StreetView> mStreetViews;
     private GestureDetector mGestureDetector;
-    private StreetViewAdapter mAdapter;
     String TAG = "Tutch";
 
     private float x1,x2;
@@ -29,18 +28,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
         setContentView(R.layout.activity_main);
         mStreetViews = new ArrayList<>();
 
+//Init recyclerView
         for (int i = 0; i < StreetView.PRE_DEFINED_STREET_VIEW_IMAGE_IDS.length; i++){
             mStreetViews.add(new StreetView(StreetView.PRE_DEFINED_STREET_VIEW_NAMES[i], StreetView.PRE_DEFINED_STREET_VIEW_IMAGE_IDS[i]));
         }
-
         final RecyclerView mGeoRecyclerView = findViewById(R.id.RecyclerView);
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL);
-
         mGeoRecyclerView.setLayoutManager(mLayoutManager);
-
         mGeoRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new StreetViewAdapter(this, mStreetViews);
+        StreetViewAdapter mAdapter = new StreetViewAdapter(this, mStreetViews);
 
         mGeoRecyclerView.setAdapter(mAdapter);
 
@@ -59,16 +56,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
     }
     @Override
-
+//create touch event
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 
         View child = rv.findChildViewUnder(e.getX(), e.getY());
         int mAdapterPosition = rv.getChildAdapterPosition(child);
         boolean InEurope;
-
+        //check if picture is in europe
         if (child != null) {
             InEurope = mStreetViews.get(mAdapterPosition).getmInEurope();
             Log.i(TAG, ""+InEurope);
+            //Detect a swipe to the left or right
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     x1 = e.getX();
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
                     float deltaX = x2 - x1;
                     Log.i(TAG, "x1:" + x1 + " x2:" + x2);
                     if (Math.abs(deltaX) > MIN_DISTANCE) {
-
+                        //check direction of swipe and give feedback through a toast message
                         String feedback;
                         if (x1 > x2) { //Swiped To The Left
                             if (InEurope == true) {
@@ -101,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
             }
         }
 
-
+//show name if there is no swipe detected
         if (child != null && mGestureDetector.onTouchEvent(e)) {
 
             Toast.makeText(this, mStreetViews.get(mAdapterPosition).getmGeoName(), Toast.LENGTH_SHORT).show();
@@ -111,15 +109,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerView.OnIt
 
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-
-
     }
 
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean b) {
-
     }
-
-
 }

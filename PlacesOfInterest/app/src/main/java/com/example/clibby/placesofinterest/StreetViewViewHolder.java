@@ -8,21 +8,13 @@ public class StreetViewViewHolder extends RecyclerView.ViewHolder {
 
 
     public TextView geoName;
-
     public ImageView geoImage;
-
     public View view;
 
-
     public StreetViewViewHolder(View itemView) {
-
         super(itemView);
-
         geoImage = itemView.findViewById(R.id.geoImageView);
-
         view = itemView;
-
     }
-
 }
 
